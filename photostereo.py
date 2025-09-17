@@ -1,11 +1,6 @@
 import cv2 as cv
 import numpy as np
 import time
-from PIL import Image
-import scipy.misc, scipy.sparse
-import scipy.sparse.linalg
-from tqdm import tqdm
-
 class photometry:
 
     def __init__(self, numimg, display):
@@ -78,15 +73,11 @@ class photometry:
         print("Normal map duration: " + str(normaltoc - normaltic))
         return self.normalmap, self.pgrads, self.qgrads
     def scale_image_range(self, src, new_min_val, new_max_val):
-        # 计算缩放因子和偏移量
         mult = (255 - 0)/(new_max_val - new_min_val)
         add = -mult*new_min_val+0
-
-        # 应用缩放和偏移
         dst = cv.convertScaleAbs(src, alpha=mult, beta=add)
-
         return dst
-    def computemedian(self, enhance_level, ksize=5):
+    def computemedian(self, enhance_level, ksize=15):
 
         print("Computing median curvature. Be patient...")
         medtic = time.process_time()
